@@ -23,6 +23,7 @@ The languages that are currently supported by alignertools are listed below in a
 This is a package of scripts that can be used to prepare data collected by the Prosodylab Experimenter. It contains the following kinds of scripts:
 
 * relabel.py
+* rename.py
 * clean_labfile.py
 * get_[language]_dict.py
 
@@ -30,15 +31,28 @@ This is a package of scripts that can be used to prepare data collected by the P
 
 The relabel.py script takes the original tab-delimited experiment file and generates a new set of .lab files for every .wav file in a directory. Old .lab files are stored in a new directory that is named by the user. All resulting .lab files will be encoded using UTF-8.
 
-  $ python relabel.py
+	$ python relabel.py
 	
-On startup, the user will the prompted to provide the following information:
+On startup, the user will be prompted to provide the following information:
 
 * The name of the experiment file or files that will provide the new .lab text - these can be dragged and dropped into the Terminal window
 * The id columns of the experiment files, separated by an underscore - the default is "experiment_item_condition"
 * The directory where the .wav files are stored. It is assumed that all .wav files are stored in the same directory. This can be dragged and dropped into the Terminal window.
 * The id columns of the sound files, separated by an underscore - the default is "experiment_participant_item_condition"
 * The name of the directory in which to put any old .lab files - the default is "0_old_labfile_relabel/"
+
+### Rename
+
+The rename.py script acts as a find-and-replace editor for the names of files of a given directory. Old files are stored in a new directory that is named by the user.
+
+	$ python rename.py
+
+On startup, the user will be prompted to provide the following information:
+
+* The directory where all of the files are stored. This can be dragged and dropped into the terminal window.
+* The name of the directory in which to put old files - the default is "0_old_file_rename/"
+* The problematic string in the file names that needs to be replaced
+* The new string that will replace the old string
 
 ### Clean Labfile
 
