@@ -61,16 +61,18 @@ makedirs(filedir + olddir)
 
 # set punctuation list (universal)
 pun_list = [[u'\xab', ''], [u'\xbb', ''], ['\"', ''], ["-", ''], ["?", ''], ["!", ''], 
-[',', ''], ['.', ''], [':', ''], [';', ''], ['\t', ' '], ['\n', ''], [u'\xa0', ' '], ['  ', ' ']]
+[',', ''], ['.', ''], [':', ''], [';', ''], ['\t', ' '], ['\n', ''], [u'\xa0', ' '], ['  ', ' '],
+['[',''],[']','']]
 
 # select language-specific character replacement list
 if lang == "French" or lang == "french":
 	char_list = [["s'", "s "], ["S'", "S "], ["c'", "c "], ["C'", "C "], ["d'", u"d "], 
 	["D'", "D "], ["l'", "l "], ["L'", "L "], ["n'", "n "], ["N'", "N "], ["qu'", "qu "], 
 	["Qu'", "Qu "], ["j'", "j "], ["J'", "J "], ["t'", "t "], ["T'", "T "], ["m'", "m "], 
-	["M'", "M "], ["jusqu'", "jusqu "], ["Jusqu'", "Jusqu "],  ['0', 'zero '], ['1', 'un '], 
-	['2', 'deux '],['3', 'trois '], ['4', 'quatre '], ['5', 'cinq '], ['6', 'six '], 
-	['7', 'sept '], ['8', 'huit '], ['9', 'neuf '], ['&', 'et'], ['\'', '']]
+	["Y'", "Y "], ["y'", "y "],["M'", "M "], ["jusqu'", "jusqu "], ["Jusqu'", "Jusqu "],  
+	['0', 'zero '], ['1', 'un '], ['2', 'deux '],['3', 'trois '], ['4', 'quatre '], 
+	['5', 'cinq '], ['6', 'six '], ['7', 'sept '], ['8', 'huit '], ['9', 'neuf '], 
+	['&', 'et'], ['\'', '']]
 elif lang == "German" or lang == "german":
 	char_list = [['0', 'zero '], ['1', 'ein '], ['2', 'zwei '], ['3', 'drei '],
 	['4', 'vier '], ['5', 'fuenf '], ['6', 'sechs '], ['7', 'sieben '], ['8', 'acht '],
