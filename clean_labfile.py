@@ -3,7 +3,7 @@
 # This script will clean lab files such that they are readable by the Prosodylab Aligner.
 # Currently works for English, French, and German lab files
 # Erin Olson erin.daphne.olson@gmail.com
-# Current Date: 2013/04/05
+# Current Date: 2013/05/03
 
 import glob
 import codecs
@@ -62,7 +62,7 @@ makedirs(filedir + olddir)
 # set punctuation list (universal)
 pun_list = [[u'\xab', ''], [u'\xbb', ''], ['\"', ''], ["-", ''], ["?", ''], ["!", ''], 
 [',', ''], ['.', ''], [':', ''], [';', ''], ['\t', ' '], ['\n', ''], [u'\xa0', ' '], ['  ', ' '],
-['[',''],[']','']]
+['[',''],[']',''], ['(',''], [')','']]
 
 # select language-specific character replacement list
 if lang == "French" or lang == "french":
@@ -79,7 +79,8 @@ elif lang == "German" or lang == "german":
 	['9', 'neun '], ['&', 'und']]
 elif lang == "English" or lang == "english":
 	char_list = [['0', 'zero '], ['1', 'one '], ['2', 'two '], ['3', 'three '], ['4', 'four '],
-	['5', 'five '], ['6', 'six '], ['7', 'seven '], ['8', 'eight '], ['9', 'nine '], ['&', 'and'], ['\'', '']]
+	['5', 'five '], ['6', 'six '], ['7', 'seven '], ['8', 'eight '], ['9', 'nine '], 
+	['&', 'and'], ['\'', ''], ['%', 'percent']]
 else:
 	char_list = None
 	
