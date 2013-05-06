@@ -61,8 +61,8 @@ makedirs(filedir + olddir)
 
 # set punctuation list (universal)
 pun_list = [[u'\xab', ''], [u'\xbb', ''], ['\"', ''], ["-", ''], ["?", ''], ["!", ''], 
-[',', ''], ['.', ''], [':', ''], [';', ''], ['\t', ' '], ['\n', ''], [u'\xa0', ' '], ['  ', ' '],
-['[',''],[']',''], ['(',''], [')','']]
+[',', ''], ['.', ''], [':', ''], [';', ''], ['\t', ' '], [' \n', ' '], ['\n', ' '],[u'\xa0', ' '], ['  ', ' '],
+['[',''],[']',''], ['(',''], [')',''], [u'\u201e', '']]
 
 # select language-specific character replacement list
 if lang == "French" or lang == "french":
@@ -76,7 +76,7 @@ if lang == "French" or lang == "french":
 elif lang == "German" or lang == "german":
 	char_list = [['0', 'zero '], ['1', 'ein '], ['2', 'zwei '], ['3', 'drei '],
 	['4', 'vier '], ['5', 'fuenf '], ['6', 'sechs '], ['7', 'sieben '], ['8', 'acht '],
-	['9', 'neun '], ['&', 'und']]
+	['9', 'neun '], ['&', 'und'], [u'\xfc', 'ue'], [u'\xf6', 'oe'], [u'\xe4', 'ae'], [u'\xdf', 'ss']]
 elif lang == "English" or lang == "english":
 	char_list = [['0', 'zero '], ['1', 'one '], ['2', 'two '], ['3', 'three '], ['4', 'four '],
 	['5', 'five '], ['6', 'six '], ['7', 'seven '], ['8', 'eight '], ['9', 'nine '], 
