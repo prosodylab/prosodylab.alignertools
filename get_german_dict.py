@@ -39,6 +39,17 @@ def find_replace(data, list):
 				line = line.replace(pair[0], pair[1])
 		data_new.append(line)
 	return data_new
+	
+def find_replace_stress(data):
+	"""Finds and replaces stressed vowels by splitting string into three subsections
+	with the apostrophe as separator. the first instance of a 0 in the third substring
+	is the vowel to be stressed"""
+	data_stress = []
+	for line in data:
+		tmp_tuple = line.partition('\' ')
+		new_line = tmp_tuple[0] + tmp_tuple[1] + tmp_tuple[2].replace('0', '1', 1)
+		data_stress.append(new_line)
+	return data_stress
 
 # open dictionary file; parse lines into a list
 gplcd = open("GPL.CD", "r"); gpl_lines = []
@@ -60,8 +71,8 @@ gpl_phones = []
 for line in gpl_unique:
 	gpl_phones.append(line[1])
 
-# get rid of apostrophes and dashes
-gpl_phones2 = find_replace(gpl_phones, [['\'',''],['-','']])
+#get rid of dashes
+gpl_phones2 = find_replace(gpl_phones, [['-', '']])
 
 # insert spaces
 gpl_spaces = []; sep = ' '
@@ -74,8 +85,6 @@ for line in gpl_phones2:
 				nstring = nstring + line[i] + sep
 			elif i == 0:
 				nstring = line[i] + sep
-			else:
-				nstring = nstring + line[i]
 		line = nstring
 	gpl_spaces.append(line)
 
@@ -88,6 +97,21 @@ repl_phones = [['+', 'pf'], ['=', 'ts'],
 ['2', 'AI'], ['6', 'AU'], ['q', 'A~'], ['#', 'aa']]
 gpl_newphones = find_replace(gpl_spaces, repl_phones)
 
+#replace all vowels
+not_stress_vowels = [['i ', 'i0 '], ['I ', 'I0 '], ['y ', 'y0 '], ['Y ', 'Y0 '],
+['u ', 'u0 '], ['U ', 'U0 '], ['e ', 'e0 '], ['ei ', 'ei0 '], ['EE ', 'EE0 '],
+['E ', 'E0 '], ['E~ ', 'E~0 '], ['I~ ', 'I~0 '], ['oe ', 'oe0 '], ['OE ', 'OE0 '],
+['OE~ ', 'OE~0 '], ['o ', 'o0 '], ['OO ', 'OO0 '], ['O ', 'O0 '], ['Oi ', 'Oi0 '],
+['OI ', 'OI0 '], ['O~ ', 'O~0 '], ['^ ', '^0 '], ['@ ', '@0 '], ['R ', 'R0 '],
+['ae ', 'ae0 '], ['a ', 'a0 '], ['A ', 'A0 '], ['Ai ', 'Ai0 '], ['Au ', 'Au0 '],
+['AI ', 'AI0 '], ['AU ', 'AU0 '], ['A~ ', 'A~0 '], ['AA ', 'AA0 '], ['aa ', 'aa0 ']]
+gpl_notstressed = find_replace(gpl_newphones, not_stress_vowels)
+
+gpl_stressed = find_replace_stress(gpl_notstressed)
+
+#get rid of apostrophes
+gpl_final = find_replace(gpl_stressed, [['\' ', '']])
+
 # make everything lowercase?
 spelling = []
 for line in gpl_unique:
@@ -95,12 +119,12 @@ for line in gpl_unique:
 	spelling.append(newline)
 
 # stitch back into one file
-gerdict = []; index = range(0,len(gpl_newphones))
+gerdict = []; index = range(0,len(gpl_final))
 for i in index:
-	newline = [spelling[i], gpl_newphones[i]]
+	newline = [spelling[i], gpl_final[i]]
 	gerdict.append(newline)
 
-# sort dictionary (for goot measure)
+# sort dictionary (for good measure)
 gerdict.sort()
 
 # write to file
