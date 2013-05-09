@@ -85,6 +85,8 @@ for line in gpl_phones2:
 				nstring = nstring + line[i] + sep
 			elif i == 0:
 				nstring = line[i] + sep
+			else:
+				nstring = nstring + line[i] + sep
 		line = nstring
 	gpl_spaces.append(line)
 
