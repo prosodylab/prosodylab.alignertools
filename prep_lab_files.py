@@ -10,10 +10,14 @@ from os import makedirs
 from os.path import exists
 from subprocess import call
 
-def extract_text(filename, tiernum):
+def extract_text(filename, utf8, tiernum):
 
-	with codecs.open(filename, 'r', 'utf-16') as f:
-		myList = f.readlines()
+	if utf8 == False:
+		with codecs.open(filename, 'r', 'utf-16') as f:
+			myList = f.readlines()
+	elif utf8 == True:
+		with codecs.open(filename, 'r', 'utf-8') as f:
+			myList = f.readlines()
 	
 	f.close()
 	
@@ -63,6 +67,19 @@ if filedir[-1] != '/':
 	filedir = filedir + '/'
 
 print"""
+Please make sure all files in this directory have the same encoding, either
+UTF-8 or UTF-16. If you have both types in your directory, split them into 
+two sub-directories and run this script for both of them.
+Are the files in this directory UTF-8 or UTF-16? Enter 8 for UTF-8 and 16 for UTF-16.
+"""
+type = raw_input("> ")
+if type == '8':
+	utf8 = True
+elif type == '16':
+	utf8 = False
+else: print("incorrect input. run script again.")
+
+print"""
 What would you like to call the directory for old files?
 Default is: 0_old_file_textgrid/
 Press enter to use default"""
@@ -101,7 +118,7 @@ for file in file_list:
 	if ".TextGrid" in file:
 	
 		#extract line of text we need
-		textline = extract_text(file, tiernum)
+		textline = extract_text(file, utf8, tiernum)
 		
 		#move the TextGrid file to a directory for the old files
 		call(["mv", file, filedir + olddir])
