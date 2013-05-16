@@ -91,12 +91,12 @@ for line in gpl_phones2:
 	gpl_spaces.append(line)
 
 # replace with phones that make more sense
-repl_phones = [['+', 'pf'], ['=', 'ts'],
-['J', 'tS'], ['_', 'dZ'], ['1', 'ei'], [')', 'EE'], ['0', 'E~'],
-['c', 'I~'], ['|', 'oe'], ['/', 'OE'], ['^', 'OE~'], ['$', 'OO'],
-['X', 'Oi'], ['4', 'OI'], ['~', 'O~'], ['V', '^'], ['3', 'R'],
-['{', 'ae'], ['A', 'AA'], ['&', 'A'], ['W', 'Ai'], ['B', 'Au'],
-['2', 'AI'], ['6', 'AU'], ['q', 'A~'], ['#', 'aa']]
+repl_phones = [[' +', ' pf'], [' =', ' ts'],
+[' J', ' tS'], [' _', ' dZ'], [' 1', ' ei'], [' )', ' EE'], [' 0', ' E~'],
+[' c', ' I~'], [' |', ' oe'], [' /', ' OE'], [' ^', ' OE~'], [' $', ' OO'],
+[' X', ' Oi'], [' 4', ' OI'], [' ~', ' O~'], [' V', ' ^'], [' 3', ' R'],
+[' {', ' ae'], [' A', ' AA'], [' &', ' A'], [' W', ' Ai'], [' B', ' Au'],
+[' 2', ' AI'], [' 6', ' AU'], [' q', ' A~'], [' #', ' aa']]
 gpl_newphones = find_replace(gpl_spaces, repl_phones)
 
 #replace all vowels
