@@ -21,10 +21,14 @@
 import csv
 import glob
 import codecs
+import re
+from glob import glob
 from sys import exit
 from shutil import move
 from os import makedirs
 from os.path import exists
+from subprocess import call
+
 
 # functions
 
@@ -87,6 +91,46 @@ Please pick a knew directory name for old lab files:"""
 			goodname = True
 	return olddir
 
+# extracts individual words from lab list and puts into list
+def extract_word(file, list):
+
+	f = codecs.open(file, "r", "utf-8")
+	string = f.readline()
+	
+	newlist = string.rsplit(" ")
+	
+	for word in newlist:
+		list.append(word)
+		
+	f.close()
+
+	return list
+
+# eliminates duplicates, taken from get_german_dict.py code
+def no_copies(data):
+	"""Eliminates identical entries in a list."""
+	data_new = []; prev = None
+	for line in data:
+		if prev is not None and not line == prev:
+			data_new.append(prev)
+		prev = line
+	return data_new
+
+
+# on same line as each word, add its pronunciation
+def add_pronunciation(words):
+
+	new_words = []
+
+	for item in words:
+		list_string = list(item)
+		for character in list_string:
+			item = item + " " + character
+		new_words.append(item)
+
+	return new_words
+
+
 # set replacement list for relabel
 #	- regular punctuation (removed): . , ! ? : ; " / ellipsis(u2026) enter tab
 #	- special quotations (removed): left-quotes(u201c) right-quotes(u201c) 
@@ -139,8 +183,8 @@ while menu == True:
 ===== MENU =====
 1. relabel files
 2. clean files
-3. quit
-4. a dictionary (not available yet)
+3. a dictionary
+4. quit
 
 Please enter the number for the option you would like to select
 	"""
@@ -358,13 +402,58 @@ Press enter to use default"""
 			filenew = open(filedir + filename, 'w')
 			filenew.write(txtnew)
 			filenew.close()
-		
+	
 	elif value == "3":
+		# create a dictionary
+				
+		print"""
+What is the file directory?
+You can drag and drop the files into the Terminal window to fill out this space
+WARNING: No individual directory should have a space character
+If so, please go back and replace any spaces with underscores
+"""
+		filedir = raw_input("> ")
+		if filedir[-1] == ' ':
+			filedir = filedir.replace(" ", '')
+		if filedir[-1] != '/':
+			filedir = filedir + '/'
+		
+		# make a dictionary using the lab files in directory
+
+		# updated list of files
+		lab_list = glob(filedir+"*")
+
+		dictionary_list = []
+
+		# for each file, get words from file and 
+		for file in lab_list:
+			if ".lab" in file:
+		
+				#extract each word in file, put into dictionary list
+				dictionary_list = extract_word(file, dictionary_list)
+		
+		# sort list
+		sorted_words = sorted(dictionary_list)
+		
+		# remove duplicates
+		unique_words = no_copies(sorted_words)
+
+		# make pronunciations
+		words_pronounced = add_pronunciation(unique_words)
+		
+		# put list into a dictionary text file	
+		dictionary_file = codecs.open(filedir + "/dictionary.txt", 'w', 'utf-8')
+
+		for word in words_pronounced:
+			dictionary_file.write(word)
+			dictionary_file.write("\n")
+
+		dictionary_file.close()
+	
+	elif value == "4":
 		# quit
 		print("quit")		
 		menu = False
 		
 	else:
 		print("Incorrect input. Try again.")
-
-
