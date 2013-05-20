@@ -13,9 +13,6 @@
 # Currently works for English, French, and German lab files
 
 # TODO: make more modular
-#	- test
-# 	- create function for making directory
-#	- create function for checking if directory exists
 # 	- figure out more modularizations
 # 	- add creating a dictionary as an option
 
@@ -76,6 +73,20 @@ def find_replace(text, list):
 			text = text.replace(pair[0], pair[1])
 	return text
 
+
+def check_dir(filedir, olddir):
+	goodname = False
+	while goodname == False:
+		if exists(filedir + olddir):
+			print """Directory already exists!
+Please pick a knew directory name for old lab files:"""
+			olddir = raw_input("> ")
+			if olddir[-1] != '/':
+				olddir = olddir + '/'
+		else:
+			goodname = True
+	return olddir
+
 # set replacement list for relabel
 #	- regular punctuation (removed): . , ! ? : ; " / ellipsis(u2026) enter tab
 #	- special quotations (removed): left-quotes(u201c) right-quotes(u201c) 
@@ -129,7 +140,7 @@ while menu == True:
 1. relabel files
 2. clean files
 3. quit
-4. a dictionary?!?
+4. a dictionary (not available yet)
 
 Please enter the number for the option you would like to select
 	"""
@@ -190,18 +201,9 @@ Press enter to use default"""
 		for file in files:
 			exp_file = [x[:] for x in unicode_csv_reader(open(file,'rU'),delimiter='\t')]
 			exp_files.append(exp_file)
-
-		# check to see if there is a directory of old lab files; make if not
-		goodname = False
-		while goodname == False:
-			if exists(sounddir + olddir):
-				print """Directory already exists!
-Please pick a new directory name for old lab files:"""
-				olddir = raw_input("> ")
-				if olddir[-1] != '/':
-					olddir = olddir + '/'
-			else:
-				goodname = True
+			
+		# check to see if the old lab file directory exits; make if not
+		olddir = check_dir(sounddir, olddir)
 		makedirs(sounddir + olddir)
 		
 		# get indices for columns
@@ -278,7 +280,7 @@ Please pick a new directory name for old lab files:"""
 1. English
 2. French
 3. German
-4. quit (choice not available)			
+4. quit (your language choice is not available)			
 			"""
 			choice = raw_input("> ")
 			
@@ -319,15 +321,7 @@ Press enter to use default"""
 			olddir = olddir + "/"
 
 		# check to see if the old lab file directory exits; make if not
-		goodname = False
-		while goodname == False:
-			if exists(filedir + olddir):
-				print "Directory already exists!\nPlease pick a new directory name for old labfiles:"
-				olddir = raw_input("> ")
-				if olddir[-1] != '/':
-					olddir = olddir + '/'
-			else:
-				goodname = True
+		olddir = check_dir(filedir, olddir)
 		makedirs(filedir + olddir)
 		
 		# append lists:
