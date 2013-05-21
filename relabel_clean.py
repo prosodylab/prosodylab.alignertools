@@ -12,9 +12,10 @@
 # This script will clean lab files such that they are readable by the Prosodylab Aligner.
 # Currently works for English, French, and German lab files
 
-# TODO: make more modular
+# TODO:
 # 	- figure out more modularizations
-# 	- add creating a dictionary as an option
+# 	- dictionary: special characters
+# 	- dictionary: if dictionary already exists, merge a new one with it
 
 # imports
 
