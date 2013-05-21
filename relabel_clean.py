@@ -22,7 +22,6 @@ import csv
 import glob
 import codecs
 import re
-from glob import glob
 from sys import exit
 from shutil import move
 from os import makedirs
@@ -421,7 +420,7 @@ If so, please go back and replace any spaces with underscores
 		# make a dictionary using the lab files in directory
 
 		# updated list of files
-		lab_list = glob(filedir+"*")
+		lab_list = glob.glob(filedir+"*")
 
 		dictionary_list = []
 

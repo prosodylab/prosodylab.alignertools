@@ -12,7 +12,7 @@ from subprocess import call
 
 # extracts text from a textgrid file given the file name, file encoding, and the tier
 # on which the text is found
-def extract_text(filename, utf8, tiernum):
+def extract_textgrid(filename, utf8, tiernum):
 
 	if utf8 == False:
 		with codecs.open(filename, 'r', 'utf-16') as f:
@@ -43,6 +43,20 @@ def extract_text(filename, utf8, tiernum):
 		text = tmp.group(1)
 	
 	return text
+
+
+# extract text lines from eaf file given the file name
+def extract_eaf(filename, tierid):
+
+	with codecs.open(filename, 'r', 'utf-8') as f:
+		myList = f.readLines()
+		
+	f.close()
+	
+	key = "TIER_ID\"" + tierid + "\""
+	
+
+	return textlist
 
 # creates a .lab file with the text from the textgrid file given the original file
 # and the line of text
@@ -97,121 +111,163 @@ def add_pronunciation(words):
 
 
 #form
-print"""
+
+menu = True
+
+while menu == True:
+
+	print"""
+What kind of files would you like to convert to .lab files? Please enter the number
+for your selection:
+
+1. .TextGrid
+2. .eaf
+3. quit
+"""
+
+	filetype = raw_input("> ")
+	
+	if filetype == "1":
+		print"""
+You have selected .TextGrid files to convert.
+Please make sure all TextGrid files in this directory have the same encoding, either
+UTF-8 or UTF-16. If you have both types in your directory, split them into 
+two sub-directories and run this script for both of them.
+Are the files in this directory UTF-8 or UTF-16? Enter 8 for UTF-8 and 16 for UTF-16.
+"""
+		type = raw_input("> ")
+		if type == '8':
+			utf8 = True
+		elif type == '16':
+			utf8 = False
+		else: print("incorrect input. run script again.")
+
+		print """
+Enter the tier number for your line of text in your TextGrid files.
+If you don't know what tier it is, open up your file in praat, and find the number
+to the left of your tier.
+Please note: this script only works if all TextGrid files in the directory have the same tier
+number for the line of text you want to extract.
+"""
+		tiernum = raw_input("> ")
+	
+	elif filetype == "2":
+		print"""
+You have selected .eaf files to convert.
+Enter the TIER_ID for your list of phrases. If you don't know what it is, open your .eaf
+file in a text editing program and search for TIER_ID. There will be several TIERS with different
+IDs, make sure you select the tier that lists your entire phrase in the notation you want."""
+
+		tierid = raw_input("> ")
+
+	elif filetype == "3":
+		print("quit.")
+		menu = False
+	
+	else:
+		print("Incorrect input. Try again.")
+
+	if filetype == "1" or filetype == "2":
+	
+
+		print"""
 What is the file directory?
 You can drag and drop the files into the Terminal window to fill out this space
 WARNING: No individual directory should have a space character
 If so, please go back and replace any spaces with underscores
 """
-filedir = raw_input("> ")
-if filedir[-1] == ' ':
-	filedir = filedir.replace(" ", '')
-if filedir[-1] != '/':
-	filedir = filedir + '/'
+		filedir = raw_input("> ")
+		if filedir[-1] == ' ':
+			filedir = filedir.replace(" ", '')
+		if filedir[-1] != '/':
+			filedir = filedir + '/'
 
-print"""
-Please make sure all files in this directory have the same encoding, either
-UTF-8 or UTF-16. If you have both types in your directory, split them into 
-two sub-directories and run this script for both of them.
-Are the files in this directory UTF-8 or UTF-16? Enter 8 for UTF-8 and 16 for UTF-16.
-"""
-type = raw_input("> ")
-if type == '8':
-	utf8 = True
-elif type == '16':
-	utf8 = False
-else: print("incorrect input. run script again.")
-
-print"""
+		print"""
 What would you like to call the directory for old files?
 Default is: 0_old_file_textgrid/
 Press enter to use default"""
-olddir = raw_input("> ")
-if olddir == '':
-	olddir = "0_old_file_textgrid/"
-if olddir[-1] != '/':
-	olddir = olddir + "/"
-
-
-print """
-Enter the tier number for your line of text in your textgrid file.
-If you don't know what tier it is, open up your file in praat, and find the number
-to the left of your tier.
-Please note: this script only works if all files in the directory have the same tier
-number for the line of text you want to extract.
-"""
-tiernum = raw_input("> ")
-	
-# check for directory & make a new one
-goodname = False
-while goodname == False:
-	if exists(filedir + olddir):
-		print "Directory already exists!\nPlease pick a new directory name for old labfiles:"
 		olddir = raw_input("> ")
+		if olddir == '':
+			if filetype == "1":
+				olddir = "0_old_file_textgrid/"
+			elif filetype == "2":
+				olddir = "0_old_file_eaf/"
 		if olddir[-1] != '/':
-			olddir = olddir + '/'
-	else:
-		goodname = True
-makedirs(filedir + olddir)
+			olddir = olddir + "/"
 
-# make a list of the files
-file_list = glob(filedir+"*")
+		# check for directory & make a new one
+		goodname = False
+		while goodname == False:
+			if exists(filedir + olddir):
+				print "Directory already exists!\nPlease pick a new directory name for old labfiles:"
+				olddir = raw_input("> ")
+				if olddir[-1] != '/':
+					olddir = olddir + '/'
+			else:
+				goodname = True
+		makedirs(filedir + olddir)
 
-# for each file, make a .lab file and save the textgrid to a separate folder
-for file in file_list:
-	if ".TextGrid" in file:
+		# make a list of the files
+		file_list = glob(filedir+"*")
+
+		# for each textgrid file, make a .lab file and save the textgrid to a separate folder
+		# for each eaf file, make all possible .lab files and save eaf to a separate folder
+		for file in file_list:
+
+			# textgrid files
+			if ".TextGrid" in file:
 	
-		#extract line of text we need
-		textline = extract_text(file, utf8, tiernum)
+				# extract line of text we need
+				textline = extract_textgrid(file, utf8, tiernum)
 		
-		#move the TextGrid file to a directory for the old files
-		call(["mv", file, filedir + olddir])
+				# move the TextGrid file to a directory for the old files
+				call(["mv", file, filedir + olddir])
 		
-		#create a new file with line of text
-		newfile = create_file(file, textline)
+				#create a new file with line of text
+				newfile = create_file(file, textline)
 		
-# make a dictionary using the lab files just created
-
-# updated list of files
-lab_list = glob(filedir+"*")
-
-dictionary_list = []
-
-# for each file, get words from file and 
-for file in lab_list:
-	if ".lab" in file:
+			# eaf files
+			elif ".eaf" in file:
 		
-		#extract each word in file, put into dictionary list
-		dictionary_list = extract_word(file, dictionary_list)
+				# extract all the lines of text needed
+				textlist = extract_eaf(file, tierid)
 		
-# sort list
-sorted_words = sorted(dictionary_list)
+				# move eaf file to a directory for the old files
+				call(["mv", file, filedir + olddir])
 		
-# remove duplicates
-unique_words = no_copies(sorted_words)
-
-# make pronunciations
-words_pronounced = add_pronunciation(unique_words)
+				#create all files necessary with lines of text
+	
 		
-# put list into a dictionary text file	
-dictionary_file = codecs.open(filedir + "/dictionary.txt", 'w', 'utf-8')
+		# make a dictionary using the lab files just created
 
-for word in words_pronounced:
-	dictionary_file.write(word)
-	dictionary_file.write("\n")
+		# updated list of files
+		lab_list = glob(filedir+"*")
 
-dictionary_file.close()
+		dictionary_list = []
 
+		# for each file, get words from file and 
+		for file in lab_list:
+			if ".lab" in file:
+		
+				#extract each word in file, put into dictionary list
+				dictionary_list = extract_word(file, dictionary_list)
+		
+		# sort list
+		sorted_words = sorted(dictionary_list)
+		
+		# remove duplicates
+		unique_words = no_copies(sorted_words)
 
+		# make pronunciations
+		words_pronounced = add_pronunciation(unique_words)
+		
+		# put list into a dictionary text file	
+		dictionary_file = codecs.open(filedir + "/dictionary.txt", 'w', 'utf-8')
 
+		for word in words_pronounced:
+			dictionary_file.write(word)
+			dictionary_file.write("\n")
 
-
-
-
-
-
-
-
-
+		dictionary_file.close()
 
 
