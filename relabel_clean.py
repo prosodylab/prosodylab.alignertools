@@ -14,7 +14,6 @@
 
 # TODO:
 # 	- figure out more modularizations
-# 	- dictionary: special characters
 # 	- dictionary: if dictionary already exists, merge a new one with it
 
 # imports
@@ -118,6 +117,7 @@ def no_copies(data):
 
 
 # on same line as each word, add its pronunciation
+# change special chars to utf-8 encode
 def add_pronunciation(words):
 
 	new_words = []
@@ -125,7 +125,12 @@ def add_pronunciation(words):
 	for item in words:
 		list_string = list(item)
 		for character in list_string:
-			item = item + " " + character
+			new_char = character.encode('unicode_escape')
+			
+			if '\\' in new_char:
+				new_char = new_char.replace('\\', "")
+			
+			item = item + " " + new_char
 		new_words.append(item)
 
 	return new_words
@@ -440,7 +445,7 @@ If so, please go back and replace any spaces with underscores
 
 		# make pronunciations
 		words_pronounced = add_pronunciation(unique_words)
-		
+				
 		# put list into a dictionary text file	
 		dictionary_file = codecs.open(filedir + "/dictionary.txt", 'w', 'utf-8')
 

@@ -129,6 +129,7 @@ def no_copies(data):
 
 
 # on same line as each word, add its pronunciation
+# change special chars to utf-8 encode
 def add_pronunciation(words):
 
 	new_words = []
@@ -136,7 +137,12 @@ def add_pronunciation(words):
 	for item in words:
 		list_string = list(item)
 		for character in list_string:
-			item = item + " " + character
+			new_char = character.encode('unicode_escape')
+			
+			if '\\' in new_char:
+				new_char = new_char.replace('\\', "")
+			
+			item = item + " " + new_char
 		new_words.append(item)
 
 	return new_words
