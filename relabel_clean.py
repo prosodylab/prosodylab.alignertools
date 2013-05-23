@@ -14,7 +14,6 @@
 
 # TODO:
 # 	- figure out more modularizations
-# 	- dictionary: if dictionary already exists, merge a new one with it
 
 # imports
 
@@ -423,8 +422,27 @@ If so, please go back and replace any spaces with underscores
 		if filedir[-1] != '/':
 			filedir = filedir + '/'
 		
-		# make a dictionary using the lab files in directory
-
+		# check if dictionary already exists
+		dictname = filedir + "/dictionary.txt"
+		
+		tmpList = []
+		old_dict_list = []
+		
+		# if it does, extract the first word on each line
+		if exists(dictname):
+		
+			with codecs.open(dictname, 'r', 'utf-8') as f:
+				tmpList = f.readlines()			
+			
+			f.close()
+			
+			for item in tmpList:
+				item = item.split()[0]
+				old_dict_list.append(item)
+				
+		# make a dictionary using the lab files just created
+		# if a dictionary already exists, merge the two lists of words first
+		
 		# updated list of files
 		lab_list = glob.glob(filedir+"*")
 
@@ -437,6 +455,8 @@ If so, please go back and replace any spaces with underscores
 				#extract each word in file, put into dictionary list
 				dictionary_list = extract_word(file, dictionary_list)
 		
+		dictionary_list = dictionary_list + old_dict_list
+		
 		# sort list
 		sorted_words = sorted(dictionary_list)
 		
@@ -445,7 +465,7 @@ If so, please go back and replace any spaces with underscores
 
 		# make pronunciations
 		words_pronounced = add_pronunciation(unique_words)
-				
+		
 		# put list into a dictionary text file	
 		dictionary_file = codecs.open(filedir + "/dictionary.txt", 'w', 'utf-8')
 
