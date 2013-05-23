@@ -4,7 +4,6 @@
 #encoded in utf-8
 
 # TODO: 
-#	- if dictionary already exists, merge with existing one
 
 import codecs
 import re
@@ -342,9 +341,28 @@ Press enter to use default"""
 					newfile = codecs.open(filename, 'w', 'utf-8')
 					newfile.write(text)
 					newfile.close()
-					
-				# make a dictionary using the lab files just created
-
+		
+		# check if dictionary already exists
+		dictname = filedir + "/dictionary.txt"
+		
+		tmpList = []
+		old_dict_list = []
+		
+		# if it does, extract the first word on each line
+		if exists(dictname):
+		
+			with codecs.open(dictname, 'r', 'utf-8') as f:
+				tmpList = f.readlines()			
+			
+			f.close()
+			
+			for item in tmpList:
+				item = item.split()[0]
+				old_dict_list.append(item)
+				
+		# make a dictionary using the lab files just created
+		# if a dictionary already exists, merge the two lists of words first
+		
 		# updated list of files
 		lab_list = glob(filedir+"*")
 
@@ -356,6 +374,8 @@ Press enter to use default"""
 		
 				#extract each word in file, put into dictionary list
 				dictionary_list = extract_word(file, dictionary_list)
+		
+		dictionary_list = dictionary_list + old_dict_list
 		
 		# sort list
 		sorted_words = sorted(dictionary_list)
