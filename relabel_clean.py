@@ -13,7 +13,6 @@
 # Currently works for English, French, and German lab files
 
 # TODO:
-# 	- figure out more modularizations
 
 # imports
 
@@ -75,7 +74,6 @@ def find_replace(text, list):
 			text = text.replace(pair[0], pair[1])
 	return text
 
-
 def check_dir(filedir, olddir):
 	goodname = False
 	while goodname == False:
@@ -114,7 +112,6 @@ def no_copies(data):
 		prev = line
 	return data_new
 
-
 # on same line as each word, add its pronunciation
 # change special chars to utf-8 encode
 def add_pronunciation(words):
@@ -133,6 +130,63 @@ def add_pronunciation(words):
 		new_words.append(item)
 
 	return new_words
+
+# create list of words from old dictionary file
+def list_from_old_dict(dictname):
+	tmpList = []
+	old_dict_list = []
+		
+	# if it does, extract the first word on each line
+	if exists(dictname):
+		
+		with codecs.open(dictname, 'r', 'utf-8') as f:
+			tmpList = f.readlines()			
+			
+		f.close()
+			
+		for item in tmpList:
+			item = item.split()[0]
+			old_dict_list.append(item)
+			
+	return old_dict_list
+
+# create list of words from lab files in file directory
+def list_of_words(filedir):
+	# updated list of files
+	lab_list = glob.glob(filedir+"*")
+
+	dictionary_list = []
+
+	# for each file, get words from file and 
+	for file in lab_list:
+		if ".lab" in file:
+		
+			#extract each word in file, put into dictionary list
+			dictionary_list = extract_word(file, dictionary_list)
+			
+	return dictionary_list
+
+# create dictionary from list of words
+def create_dict(dictionary_list):
+	# sort list
+	sorted_words = sorted(dictionary_list)
+		
+	# remove duplicates
+	unique_words = no_copies(sorted_words)
+
+	# make pronunciations
+	words_pronounced = add_pronunciation(unique_words)
+		
+	# put list into a dictionary text file	
+	dictionary_file = codecs.open(filedir + "/dictionary.txt", 'w', 'utf-8')
+
+	for word in words_pronounced:
+		dictionary_file.write(word)
+		dictionary_file.write("\n")
+
+	dictionary_file.close()
+	
+	return dictionary_file
 
 
 # set replacement list for relabel
@@ -193,6 +247,8 @@ while menu == True:
 Please enter the number for the option you would like to select
 	"""
 	value = raw_input("> ")
+	
+	"""RELABEL FILES"""
 	
 	if value == "1":
 		# run relabel script
@@ -315,7 +371,6 @@ Press enter to use default"""
 				labfile.write(lab_text)
 				labfile.close()
 		
-		
 	elif value == "2":
 		# run clean script
 				
@@ -406,7 +461,7 @@ Press enter to use default"""
 			filenew = open(filedir + filename, 'w')
 			filenew.write(txtnew)
 			filenew.close()
-	
+		
 	elif value == "3":
 		# create a dictionary
 				
@@ -423,62 +478,22 @@ If so, please go back and replace any spaces with underscores
 			filedir = filedir + '/'
 		
 		# check if dictionary already exists
-		dictname = filedir + "/dictionary.txt"
-		
-		tmpList = []
-		old_dict_list = []
-		
-		# if it does, extract the first word on each line
-		if exists(dictname):
-		
-			with codecs.open(dictname, 'r', 'utf-8') as f:
-				tmpList = f.readlines()			
-			
-			f.close()
-			
-			for item in tmpList:
-				item = item.split()[0]
-				old_dict_list.append(item)
+		dictname = filedir + "/dictionary.txt"				
+		old_dict_list = list_from_old_dict(dictname)
 				
-		# make a dictionary using the lab files just created
-		# if a dictionary already exists, merge the two lists of words first
-		
-		# updated list of files
-		lab_list = glob.glob(filedir+"*")
-
-		dictionary_list = []
-
-		# for each file, get words from file and 
-		for file in lab_list:
-			if ".lab" in file:
-		
-				#extract each word in file, put into dictionary list
-				dictionary_list = extract_word(file, dictionary_list)
+		# make a dictionary using the lab files just created and any old dictionary available
+	
+		dictionary_list = list_of_words(filedir)
 		
 		dictionary_list = dictionary_list + old_dict_list
 		
-		# sort list
-		sorted_words = sorted(dictionary_list)
+		dictionary_file = create_dict(dictionary_list)
 		
-		# remove duplicates
-		unique_words = no_copies(sorted_words)
-
-		# make pronunciations
-		words_pronounced = add_pronunciation(unique_words)
-		
-		# put list into a dictionary text file	
-		dictionary_file = codecs.open(filedir + "/dictionary.txt", 'w', 'utf-8')
-
-		for word in words_pronounced:
-			dictionary_file.write(word)
-			dictionary_file.write("\n")
-
-		dictionary_file.close()
-	
 	elif value == "4":
 		# quit
 		print("quit")		
 		menu = False
-		
+	
+	
 	else:
 		print("Incorrect input. Try again.")
