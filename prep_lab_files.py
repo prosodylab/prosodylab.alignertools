@@ -297,6 +297,23 @@ Press enter to use default"""
 				#create a new file with line of text
 				newfile = create_file(file, textline)
 		
+		print"""
+If there is a dictionary in another directory you would like to merge with the dictionary you are creating, input the file name (must include the directory)
+If not, just hit enter.
+You can drag and drop the files into the Terminal window to fill out this space
+WARNING: No individual directory should have a space character
+If so, please go back and replace any spaces with underscores
+		"""
+		
+		dictdir = raw_input("> ")
+		other_dict_list = []
+		if dictdir == '':
+			print(" ")
+		else:
+			if dictdir[-1] == ' ':
+				dictdir = dictdir.replace(" ", '')
+			other_dict_list = list_from_old_dict(dictdir)
+		
 		# check if dictionary already exists
 		dictname = filedir + "/dictionary.txt"
 		old_dict_list = list_from_old_dict(dictname)
@@ -305,7 +322,7 @@ Press enter to use default"""
 				
 		dictionary_list = list_of_words(filedir)
 		
-		dictionary_list = dictionary_list + old_dict_list
+		dictionary_list = dictionary_list + old_dict_list + other_dict_list
 		
 		dictionary_file = create_dict(dictionary_list)
 		
@@ -376,6 +393,23 @@ Press enter to use default"""
 					newfile.write(text)
 					newfile.close()
 		
+		print"""
+If there is a dictionary in another directory you would like to merge with the dictionary you are creating, input the file name (must include the directory)
+If not, just hit enter.
+You can drag and drop the files into the Terminal window to fill out this space
+WARNING: No individual directory should have a space character
+If so, please go back and replace any spaces with underscores
+		"""
+		
+		dictdir = raw_input("> ")
+		other_dict_list = []
+		if dictdir == '':
+			print(" ")
+		else:
+			if dictdir[-1] == ' ':
+				dictdir = dictdir.replace(" ", '')
+			other_dict_list = list_from_old_dict(dictdir)
+		
 		# check if dictionary already exists
 		dictname = filedir + "/dictionary.txt"				
 		old_dict_list = list_from_old_dict(dictname)
@@ -384,7 +418,7 @@ Press enter to use default"""
 	
 		dictionary_list = list_of_words(filedir)
 		
-		dictionary_list = dictionary_list + old_dict_list
+		dictionary_list = dictionary_list + old_dict_list + other_dict_list
 		
 		dictionary_file = create_dict(dictionary_list)
 
