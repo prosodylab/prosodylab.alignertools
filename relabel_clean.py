@@ -248,7 +248,6 @@ Please enter the number for the option you would like to select
 	"""
 	value = raw_input("> ")
 	
-	"""RELABEL FILES"""
 	
 	if value == "1":
 		# run relabel script
@@ -306,9 +305,16 @@ Press enter to use default"""
 			exp_file = [x[:] for x in unicode_csv_reader(open(file,'rU'),delimiter='\t')]
 			exp_files.append(exp_file)
 			
-		# check to see if the old lab file directory exits; make if not
-		olddir = check_dir(sounddir, olddir)
-		makedirs(sounddir + olddir)
+		
+		# check to see if old lab file directory needed; if there are any lab files
+		lab_list = glob.glob(sounddir + '*.lab')
+		
+		if not lab_list:
+			print("There are no lab files to work with.")
+		else:
+			# check to see if the old lab file directory exits; make if not
+			olddir = check_dir(sounddir, olddir)
+			makedirs(sounddir + olddir)
 		
 		# get indices for columns
 		titles = []
@@ -423,9 +429,15 @@ Press enter to use default"""
 		if olddir[-1] != "/":
 			olddir = olddir + "/"
 
-		# check to see if the old lab file directory exits; make if not
-		olddir = check_dir(filedir, olddir)
-		makedirs(filedir + olddir)
+		# check to see if old lab file directory needed; if there are any lab files
+		lab_list = glob.glob(filedir + '*.lab')
+		
+		if not lab_list:
+			print("There are no lab files to work with.")
+		else:
+			# check to see if the old lab file directory exits; make if not
+			olddir = check_dir(filedir, olddir)
+			makedirs(filedir + olddir)
 		
 		# append lists:
 		
@@ -487,7 +499,10 @@ If so, please go back and replace any spaces with underscores
 		
 		dictionary_list = dictionary_list + old_dict_list
 		
-		dictionary_file = create_dict(dictionary_list)
+		if not dictionary_list:
+			print("The dictionary is empty.")
+		else:		
+			dictionary_file = create_dict(dictionary_list)
 		
 	elif value == "4":
 		# quit

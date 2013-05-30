@@ -210,8 +210,8 @@ menu = True
 while menu == True:
 
 	print"""
-What kind of files would you like to convert to .lab files? Please enter the number
-for your selection:
+What kind of files would you like to convert to .lab files?
+Please enter the number for your selection:
 
 1. .TextGrid
 2. .eaf
@@ -223,10 +223,12 @@ for your selection:
 	if filetype == "1":
 		print"""
 You have selected .TextGrid files to convert.
-Please make sure all TextGrid files in this directory have the same encoding, either
-UTF-8 or UTF-16. If you have both types in your directory, split them into 
+Please make sure all TextGrid files in this directory 
+have the same encoding, either UTF-8 or UTF-16.
+If you have both types in your directory, split them into 
 two sub-directories and run this script for both of them.
-Are the files in this directory UTF-8 or UTF-16? Enter 8 for UTF-8 and 16 for UTF-16.
+Are the files in this directory UTF-8 or UTF-16? 
+Enter 8 for UTF-8 and 16 for UTF-16.
 """
 		type = raw_input("> ")
 		if type == '8':
@@ -237,10 +239,8 @@ Are the files in this directory UTF-8 or UTF-16? Enter 8 for UTF-8 and 16 for UT
 
 		print """
 Enter the tier number for your line of text in your TextGrid files.
-If you don't know what tier it is, open up your file in praat, and find the number
-to the left of your tier.
-Please note: this script only works if all TextGrid files in the directory have the same tier
-number for the line of text you want to extract.
+If you don't know what tier it is, open up your file in praat, and find the number to the left of your tier.
+Please note: this script only works if all TextGrid files in the directory have the same tier number for the line of text you want to extract.
 """
 		tierid = raw_input("> ")
 		
@@ -313,9 +313,9 @@ Press enter to use default"""
 	elif filetype == "2":
 		print"""
 You have selected .eaf files to convert.
-Enter the TIER_ID for your list of phrases. If you don't know what it is, open your .eaf
-file in a text editing program and search for TIER_ID. There will be several TIERS with different
-IDs, make sure you select the tier that lists your entire phrase in the notation you want."""
+Enter the TIER_ID for your list of phrases.
+If you don't know what it is, open your .eaf file in a text editing program and search for TIER_ID. 
+There will be several TIERS with different IDs, make sure you select the tier that lists your entire phrase in the notation you want."""
 
 		tierid = raw_input("> ")
 
