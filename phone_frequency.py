@@ -3,7 +3,6 @@
 
 import codecs
 from glob import glob
-from sys import exit
 
 def dirclean(string):
 	"""Clean raw input strings so that they are readable as directories."""
@@ -16,10 +15,6 @@ def dirclean(string):
 def parse(string, sep):
 	"""Parse a string into a list."""
 	# remove leading and trailing sep's
-	if string[0] == sep:
-		string = string[1:]
-	if string[-1] == sep:
-		string = string[:-1]
 	id_list = []
 	while string is not "":
 		if sep not in string:
@@ -48,10 +43,10 @@ You can drag and drop it into the Terminal window below.
 Press enter to use the dictionary stored in the 
 most current version of the aligner."""
 dictionary = raw_input("> ")
-if dictionary[-1] == " ":
-	dictionary = dictionary.replace(" ","")
 if dictionary == "":
 	dictionary = "/Applications/Prosodylab-Aligner-v1/dictionary.txt"
+if dictionary[-1] == " ":
+	dictionary = dictionary.replace(" ","")
 print"""
 Which set of .lab files are you using to calculate the
 frequency? You can drag and drop it into the Terminal
@@ -98,7 +93,11 @@ for file in lab_list:
 	# Read in text and parse into words
 	f = codecs.open(file, 'r', 'utf-8')
 	txt = f.read(); f.close()
-	txt = find_replace(txt, [['\n',''],[' \t',''],['\t','']])
+	txt = find_replace(txt, [['  ',' '],[' \n',''],['\n',''],[' \t',''],['\t','']])
+	if txt[0] == " ":
+		txt = txt[1:]
+	if txt[-1] == " ":
+		txt = txt[:-1]
 	wordlist = parse(txt," ")
 	
 	# Read words in as phones
@@ -126,7 +125,7 @@ for file in lab_list:
 			
 		for word in wordlist:
 			if word not in uwords:
-				print "\nThe word %s is missing from the dictionary." % word
+				print "\nThe word %s in %s is missing from the dictionary." % (word, file.replace(labdir,''))
 				print "Please provide its pronunciation below."
 				print "Each phoneme must be separated by a space."
 				phonestring = raw_input("> ")
@@ -155,7 +154,7 @@ for file in lab_list:
 				ppair[1] = ppair[1] + 1
 
 # Store phonelist in a new file
-countfile = open("phone_count.txt", "w")
+countfile = open(labdir + "0_phone_count.txt", "w")
 for pair in countlist:
 	textline = pair[0] + '\t' + str(pair[1]) + '\n'
 	countfile.write(textline)
@@ -164,7 +163,7 @@ countfile.close()
 # Store dictionary
 if mod == True:
 	dlist.sort()
-	newdict = open("new_dictionary.txt", "w")
+	newdict = open(labdir + "0_new_dictionary.txt", "w")
 	for line in dlist:
 		textline = None
 		for item in line:
