@@ -60,7 +60,8 @@ for line in gplcd:
 # keep only the 2nd & 4th columns
 gpl_new = []
 for line in gpl_lines:
-	newline = [line[1], line[3]]
+	newline = [line[1], " " + line[3]]
+	#newline = [line[1], line[3]]
 	gpl_new.append(newline)
 
 # eliminate duplicates
@@ -91,13 +92,20 @@ for line in gpl_phones2:
 	gpl_spaces.append(line)
 
 # replace with phones that make more sense
-repl_phones = [[' +', ' pf'], [' =', ' ts'],
-[' J', ' tS'], [' _', ' dZ'], [' 1', ' ei'], [' )', ' EE'], [' 0', ' E~'],
-[' c', ' I~'], [' |', ' oe'], [' /', ' OE'], [' ^', ' OE~'], [' $', ' OO'],
-[' X', ' Oi'], [' 4', ' OI'], [' ~', ' O~'], [' V', ' ^'], [' 3', ' R'],
-[' {', ' ae'], [' A', ' AA'], [' &', ' A'], [' W', ' Ai'], [' B', ' Au'],
-[' 2', ' AI'], [' 6', ' AU'], [' q', ' A~'], [' #', ' aa']]
-gpl_newphones = find_replace(gpl_spaces, repl_phones)
+repl_phones_stress = [['\'+', '\'pf'], ['\'=', '\'ts'], ['\'J', '\'tS'], ['\'_', '\'dZ'], 
+['\'1', '\'ei'], ['\')', '\'EE'], ['\'0', '\'E~'], ['\'c', '\'I~'], ['\'|', '\'oe'],
+['\'^', '\'OE'], ['\'^', '\'OE~'], ['\'$', '\'OO'], ['\'X', '\'Oi'], ['\'4', '\'OI'],
+['\'~', '\'O~'], ['\'V', '\'^'], ['\'3', '\'R'], ['\'{', '\'ae'], ['\'A', '\'AA'], 
+['\'&', '\'A'], ['\'W', '\'Ai'], ['\'B', '\'Au'], ['\'2', '\'AI'], ['\'6', '\'AU'], 
+['\'q', '\'A~'], ['\'#', '\'aa']]
+gpl_stress = find_replace(gpl_spaces, repl_phones_stress)
+
+repl_phones = [[' +', ' pf'], [' =', ' ts'], [' J', ' tS'], [' _', ' dZ'], [' 1', ' ei'],
+[' )', ' EE'], [' 0', ' E~'], [' c', ' I~'], [' |', ' oe'], [' /', ' OE'], [' ^', ' OE~'],
+[' $', ' OO'], [' X', ' Oi'], [' 4', ' OI'], [' ~', ' O~'], [' V', ' ^'], [' 3', ' R'],
+[' {', ' ae'], [' A', ' AA'], [' &', ' A'], [' W', ' Ai'], [' B', ' Au'], [' 2', ' AI'],
+[' 6', ' AU'], [' q', ' A~'], [' #', ' aa']]
+gpl_newphones = find_replace(gpl_stress, repl_phones)
 
 #replace all vowels
 not_stress_vowels = [['i ', 'i0 '], ['I ', 'I0 '], ['y ', 'y0 '], ['Y ', 'Y0 '],
