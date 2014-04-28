@@ -209,9 +209,9 @@ replist =[[u".",u""], [u",",u""], [u"!",u""], [u"?",u""], [u":",u""], [u";",u""]
 	
 # replacement lists for clean_labfile
 # set punctuation list (universal)
-pun_list = [[u'\xab', ''], [u'\xbb', ''], ['\"', ''], ["-", ''], ["?", ''], ["!", ''], 
+pun_list = [[u'\xab', ''], [u'\xbb', ''], ['\"', ''], ["-", ' '], ["?", ''], ["!", ''], 
 [',', ''], ['.', ''], [':', ''], [';', ''], ['\t', ' '], [' \n', ' '], ['\n', ' '],[u'\xa0', ' '], ['  ', ' '],
-['[',''],[']',''], ['(',''], [')',''], [u'\u201e', '']]
+['[',''],[']',''], ['(',''], [')',''], [u'\u201e', ''], [u'\u2019',u"'"]]
 
 # language-specific character replacement list
 french_char_list = [["s'", "s "], ["S'", "S "], ["c'", "c "], ["C'", "C "], ["d'", u"d "], 
@@ -220,7 +220,7 @@ french_char_list = [["s'", "s "], ["S'", "S "], ["c'", "c "], ["C'", "C "], ["d'
 ["Y'", "Y "], ["y'", "y "],["M'", "M "], ["jusqu'", "jusqu "], ["Jusqu'", "Jusqu "],  
 ['0', 'zero '], ['1', 'un '], ['2', 'deux '],['3', 'trois '], ['4', 'quatre '], 
 ['5', 'cinq '], ['6', 'six '], ['7', 'sept '], ['8', 'huit '], ['9', 'neuf '], 
-['&', 'et'], ['\'', '']]
+['&', 'et']]
 
 german_char_list = [['0', 'zero '], ['1', 'ein '], ['2', 'zwei '], ['3', 'drei '],
 ['4', 'vier '], ['5', 'fuenf '], ['6', 'sechs '], ['7', 'sieben '], ['8', 'acht '],
@@ -229,7 +229,7 @@ german_char_list = [['0', 'zero '], ['1', 'ein '], ['2', 'zwei '], ['3', 'drei '
 
 english_char_list = [['0', 'zero '], ['1', 'one '], ['2', 'two '], ['3', 'three '], ['4', 'four '],
 ['5', 'five '], ['6', 'six '], ['7', 'seven '], ['8', 'eight '], ['9', 'nine '], 
-['&', 'and'], ['\'s', ' s'], ['\'', ''], ['%', 'percent']]
+['&', 'and'], ['\'s', ' s'], ['%', 'percent']]
 
 
 # user form
