@@ -290,10 +290,10 @@ def clean_module(file_dir, old_dir, lang, dict):
 		with open(file, 'r') as f:
 			text = f.read()
 		filename = file.replace(file_dir, '')
-		text = clean_text(text, lang) # step 8ci
+		text = clean_text(lang, text) # step 8ci
 		if dict == True:
 			word_list = store_to_dictionary(text, word_list) # step 8cii
-		move_old_lab_file(file_dir, old_dir, filename) # step 8ciii
+		move_old_lab(file_dir, old_dir, filename) # step 8ciii
 		write_to_lab(file_dir, filename, text) # step 8civ
 		
 	if dict == True and word_list != []:
