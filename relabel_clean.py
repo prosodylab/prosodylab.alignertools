@@ -180,7 +180,7 @@ def find_line_in_file(files, bits, column_indices, lab_indices):
 # STEP 8Ci - clean text
 def clean_text(lang, text):
 	rep_list =[[u".",u""], [u",",u""], [u"!",u""], [u"?",u""], [u":",u""], [u";",u""], 
-		[u'"',u""], [u"/",u""], [u"\n",u" "], [u"\\n",u" "], [u"\t",u" "], [u"\u2026",u""], 
+		[u'"',u""], [u"/",u""], [u"\n",u" "], [u"\r", u" "], [u"\\n",u" "], [u"\t",u" "], [u"\u2026",u""], 
 		[u"\\", u""], [u"\u201c",u""], [u"\u201d",u""], [u"\u201f",u""], [u"\u201a",u""], 
 		[u"\u201e",u""], [u"\u2033",u""], [u"\u2039",u""], [u"\u203a",u""], [u"\xab",u""], 
 		[u"\xbb",u""], 	[u"\xa0",u" "], [u"\u2018",u"'"], [u"\u2019",u"'"], [u"\u201b",u"'"], 
@@ -220,7 +220,7 @@ def clean_text(lang, text):
 		rep_list.extend([["0" , "nul "], ["1", "een "], ["2", "twee "], ["3", "drie "], ["4", "vier "],
 			["5", "vijf "], ["6", "zes "], ["7", "zeven "], ["8", "acht "], ["9", "negen "],
 			["&", "en"]])
-		
+	
 	text = find_replace(text, rep_list)
 	
 	if text[0] == "'":
@@ -287,7 +287,7 @@ def clean_module(file_dir, old_dir, lang, dict):
 	make_old_directory(file_dir, old_dir) # step 6
 	file_list = read_files(file_dir, "lab") # step 7
 	for file in file_list:
-		with open(file, 'r') as f:
+		with codecs.open(file, 'r', 'utf-8') as f:
 			text = f.read()
 		filename = file.replace(file_dir, '')
 		text = clean_text(lang, text) # step 8ci
@@ -582,13 +582,15 @@ You can drag and drop the file into the Terminal window to fill out this space""
 Default is: 0_old_labfile_clean/
 Press enter to use default"""
 			old_dir = raw_input("> ")
+			if old_dir == '':
+				old_dir = "0_old_labfile_clean/"
 			old_dir = name_check(old_dir)
 		else:
 			old_dir = opt_dict["old dir"]
 		
 		# see if the user wants to use a dictionary
 		if opt_dict == None:
-			"\nWould you like to create a dictionary from the lab file text?"
+			print "\nWould you like to create a dictionary from the lab file text?"
 			print "Please answer 'y' or 'yes' if so"
 			d_choice = raw_input("> ").lower()
 			if d_choice == "y" or d_choice == "yes":
