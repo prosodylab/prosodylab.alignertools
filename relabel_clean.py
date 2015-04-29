@@ -59,8 +59,8 @@ def unicode_csv_reader(data, **kwargs):
 def indexer(list1, list2):
 	"""Find the index of an object in list1 if it matches an object in list2"""
 	index_list = []
-	for x in list1:
-		for y in list2:
+	for x in list2:
+		for y in list1:
 			if x == y:
 				index = list1.index(x)
 				index_list.append(index)
@@ -332,6 +332,8 @@ def relabel_module(exp_file_list, col_names, file_dir, wav_format, old_dir, lang
 			if lab_found == True:
 				move_old_lab(file_dir, old_dir, lab_name) # step 8ciii
 			write_to_lab(file_dir, lab_name, text) # step 8civ
+		else:
+			print("No text found for the file " + file_name)
 	if word_list != [] and dict == True:
 		make_dictionary_file(file_dir, word_list) # step 9
 
@@ -494,7 +496,7 @@ If so, please go back and replace any spaces with underscores"""
 		else:
 			exp_files = opt_dict["text file"]
 		
-		# get column names
+		# get column names"amli"
 		if opt_dict == None:
 			print """\nWhat are the columns that identify the lab text (id columns of the experiment
 file)? Separate all id columns with an underscore
